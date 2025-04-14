@@ -32,7 +32,7 @@ export default function LoginPage() {
     },
   });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: any) => {
     e.preventDefault();
 
     if (!email.trim() || !password.trim()) {

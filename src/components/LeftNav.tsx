@@ -1,37 +1,40 @@
 // components/LeftNav.tsx
+"use client";
 
-export default function LeftNav() {
+interface LeftNavProps {
+  setActiveComponent: (component: "feed" | "events" | "profile") => void;
+  activeComponent: "feed" | "events" | "profile";
+}
+
+export default function LeftNav({
+  setActiveComponent,
+  activeComponent,
+}: LeftNavProps) {
+  const menuItems = [
+    { id: "feed", label: "Feed" },
+    { id: "events", label: "Events" },
+    { id: "profile", label: "Profile" },
+  ];
+
   return (
-    <nav className="flex flex-col items-start w-64 h-screen sticky top-0 bg-white dark:bg-gray-800 border-r p-4">
-      <h1 className="text-2xl font-bold mb-8">MyApp</h1>
-      <ul className="space-y-4 w-full">
-        <li className="w-full">
-          <button className="hover:bg-gray-200 dark:hover:bg-gray-700 p-2 rounded w-full text-left">
-            Home
-          </button>
-        </li>
-        <li className="w-full">
-          <button className="hover:bg-gray-200 dark:hover:bg-gray-700 p-2 rounded w-full text-left">
-            Search
-          </button>
-        </li>
-        <li className="w-full">
-          <button className="hover:bg-gray-200 dark:hover:bg-gray-700 p-2 rounded w-full text-left">
-            Events
-          </button>
-        </li>
-        <li className="w-full">
-          <button className="hover:bg-gray-200 dark:hover:bg-gray-700 p-2 rounded w-full text-left">
-            Messages
-          </button>
-        </li>
-        <li className="w-full">
-          <button className="hover:bg-gray-200 dark:hover:bg-gray-700 p-2 rounded w-full text-left">
-            Notifications
-          </button>
-        </li>
+    <nav className="w-64 bg-white dark:bg-gray-800 p-4 border-r">
+      <ul>
+        {menuItems.map((item) => (
+          <li key={item.id} className="mb-2">
+            <button
+              onClick={() =>
+                setActiveComponent(item.id as "feed" | "events" | "profile")
+              }
+              className={`w-full text-left p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-700
+                ${
+                  activeComponent === item.id ? "font-bold text-blue-500" : ""
+                }`}
+            >
+              {item.label}
+            </button>
+          </li>
+        ))}
       </ul>
-      {/* Add more nav items as needed */}
     </nav>
   );
 }
