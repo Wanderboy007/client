@@ -18,6 +18,7 @@ export default function LeftNav({
 
   return (
     <nav className="w-64 bg-white dark:bg-gray-800 p-4 border-r">
+      <h1 className="text-lg font-bold mb-5">CCCM</h1>
       <ul>
         {menuItems.map((item) => (
           <li key={item.id} className="mb-2">
