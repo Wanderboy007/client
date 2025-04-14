@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 
@@ -9,22 +10,24 @@ const LoginUser = async (user: any) => {
     headers: {
       "Content-Type": "application/json",
     },
+    credentials: "include",
     body: JSON.stringify(user),
   });
 
-  if (!res.ok) throw new Error("Failed to create user");
+  if (!res.ok) throw new Error("Failed to log in");
   return res.json();
 };
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setpassword] = useState("");
+  const router = useRouter();
 
   const mutation = useMutation({
     mutationFn: LoginUser,
     onSuccess: (data) => {
       console.log("User login:", data);
-      alert("User login sucess!");
+      router.push("/main");
     },
     onError: (error) => {
       console.error("Error:", error);
