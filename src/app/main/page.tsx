@@ -8,6 +8,8 @@ import LeftNav from "@/components/LeftNav";
 
 const Feed = dynamic(() => import("@/components/Feed"));
 const Scrapbook = dynamic(() => import("@/components/Scrapbook"));
+const Event = dynamic(() => import("@/components/Events"));
+const Profile = dynamic(() => import("@/components/Profile"));
 
 type ComponentKey = "feed" | "events" | "profile" | "scrapbook";
 
@@ -20,9 +22,9 @@ export default function MainPage() {
       case "feed":
         return <Feed />;
       case "events":
-        return <>events</>;
+        return <Event />;
       case "profile":
-        return <>profile</>;
+        return <Profile />;
       case "scrapbook":
         return <Scrapbook />;
       default:
@@ -55,26 +57,31 @@ export default function MainPage() {
 
             {/* Animated Sidebar */}
             <motion.div
-              className="fixed top-0 left-0 w-64 h-full z-50 text-white shadow-lg bg-gradient-to-b from-indigo-500 via-purple-500 to-pink-500"
+              className="fixed top-0 left-0 w-64 h-full z-50 text-white shadow-lg bg-gradient-to-b from-indigo-500 via-purple-500 to-pink-500 overflow-y-auto"
               initial={{ x: "-100%" }}
               animate={{ x: 0 }}
               exit={{ x: "-100%" }}
               transition={{ type: "tween", duration: 0.3 }}
             >
               <div className="p-4">
+                {/* Improved Close Button */}
                 <button
-                  className="mb-4 text-sm text-black"
+                  className="mb-4 text-sm bg-white text-gray-800 px-3 py-1 rounded hover:bg-gray-100"
                   onClick={() => setIsMobileNavOpen(false)}
                 >
                   Close
                 </button>
-                <LeftNav
-                  setActiveComponent={(comp) => {
-                    setActiveComponent(comp);
-                    setIsMobileNavOpen(false);
-                  }}
-                  activeComponent={activeComponent}
-                />
+
+                {/* Sidebar Content */}
+                <div className="overflow-hidden">
+                  <LeftNav
+                    setActiveComponent={(comp) => {
+                      setActiveComponent(comp);
+                      setIsMobileNavOpen(false);
+                    }}
+                    activeComponent={activeComponent}
+                  />
+                </div>
               </div>
             </motion.div>
           </>
@@ -86,6 +93,7 @@ export default function MainPage() {
         <LeftNav
           setActiveComponent={setActiveComponent}
           activeComponent={activeComponent}
+          variant="desktop"
         />
       </aside>
 

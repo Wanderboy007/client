@@ -5,7 +5,7 @@ import { UploadButton, UploadDropzone } from "@/utils/uploadthing";
 export default function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <UploadDropzone />
+      <UploadDropzone endpoint="imageUploader" />
       <UploadButton
         endpoint="imageUploader"
         onClientUploadComplete={(res) => {
