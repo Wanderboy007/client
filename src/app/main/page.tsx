@@ -7,8 +7,9 @@ import { motion, AnimatePresence } from "framer-motion";
 import LeftNav from "@/components/LeftNav";
 
 const Feed = dynamic(() => import("@/components/Feed"));
+const Scrapbook = dynamic(() => import("@/components/Scrapbook"));
 
-type ComponentKey = "feed" | "events" | "profile";
+type ComponentKey = "feed" | "events" | "profile" | "scrapbook";
 
 export default function MainPage() {
   const [activeComponent, setActiveComponent] = useState<ComponentKey>("feed");
@@ -22,6 +23,8 @@ export default function MainPage() {
         return <>events</>;
       case "profile":
         return <>profile</>;
+      case "scrapbook":
+        return <Scrapbook />;
       default:
         return <Feed />;
     }

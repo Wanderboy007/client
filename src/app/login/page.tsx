@@ -27,6 +27,10 @@ export default function LoginPage() {
     mutationFn: LoginUser,
     onSuccess: (data) => {
       console.log("User login:", data);
+
+      // Save the user data (or token) to local storage
+      localStorage.setItem("user", JSON.stringify(data));
+
       router.push("/main");
     },
     onError: (error) => {

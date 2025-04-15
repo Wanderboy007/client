@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
 
 const registerUser = async (user: any) => {
   const res = await fetch(
@@ -28,12 +29,14 @@ export default function RegisterPage() {
     role: "student",
     year: "",
   });
+  const router = useRouter();
 
   const mutation = useMutation({
     mutationFn: registerUser,
     onSuccess: (data) => {
       console.log("User registered:", data);
       toast.success("Registration successful!");
+      router.push("/login");
     },
     onError: (error) => {
       console.error("Error:", error);
