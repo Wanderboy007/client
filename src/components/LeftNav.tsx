@@ -2,8 +2,10 @@
 "use client";
 
 interface LeftNavProps {
-  setActiveComponent: (component: "feed" | "events" | "profile") => void;
-  activeComponent: "feed" | "events" | "profile";
+  setActiveComponent: (
+    component: "feed" | "events" | "profile" | "scrapbook"
+  ) => void;
+  activeComponent: "feed" | "events" | "profile" | "scrapbook";
 }
 
 export default function LeftNav({

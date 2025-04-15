@@ -7,10 +7,9 @@ import { motion, AnimatePresence } from "framer-motion";
 import LeftNav from "@/components/LeftNav";
 
 const Feed = dynamic(() => import("@/components/Feed"));
-const Events = dynamic(() => import("@/components/Events"));
-const Profile = dynamic(() => import("@/components/Profile"));
+const Scrapbook = dynamic(() => import("@/components/Scrapbook"));
 
-type ComponentKey = "feed" | "events" | "profile";
+type ComponentKey = "feed" | "events" | "profile" | "scrapbook";
 
 export default function MainPage() {
   const [activeComponent, setActiveComponent] = useState<ComponentKey>("feed");
@@ -21,9 +20,11 @@ export default function MainPage() {
       case "feed":
         return <Feed />;
       case "events":
-        return <Events />;
+        return <>events</>;
       case "profile":
-        return <Profile />;
+        return <>profile</>;
+      case "scrapbook":
+        return <Scrapbook />;
       default:
         return <Feed />;
     }
@@ -93,9 +94,9 @@ export default function MainPage() {
 
       {/* Right Sidebar */}
       <aside className="hidden lg:block w-64 border-l p-4 bg-white dark:bg-gray-800">
-        <h3 className="font-bold mb-2">Suggestions</h3>
+        <h3 className="font-bold mb-2">Suggestions xdcsdcsdcsdcsdcsd</h3>
         <p className="text-sm text-gray-600 dark:text-gray-300">
-          More content here....++++++++++
+          More content here...
         </p>
       </aside>
     </div>
