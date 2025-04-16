@@ -11,8 +11,9 @@ import axios from "axios";
 import { RootState } from "../../store";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
-import { UploadButton } from "@/utils/uploadthing";
+import { UploadDropzone } from "@/utils/uploadthing";
 import { toast } from "react-toastify";
+import { EventImageUploader } from "@/components/EventImageUploader";
 
 interface IEvent {
   _id: string;
@@ -70,9 +71,15 @@ export default function EventPage() {
         user.id && event?.registeredUsers.includes(user.id)
           ? "unregister"
           : "register";
-      await axios.patch(`/api/events/${eventId}/${endpoint}`, {
-        userId: user.id,
-      });
+      await axios.post(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/event/${eventId}/${endpoint}`,
+        {
+          userId: user.id,
+        },
+        {
+          withCredentials: true,
+        }
+      );
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["event", eventId] });
@@ -231,33 +238,12 @@ export default function EventPage() {
             </div>
           )}
 
-          {/* Admin Upload Section */}
           {user.role === "admin" && (
             <div className="border-t pt-6 space-y-4">
               <h3 className="text-xl font-semibold dark:text-white">
-                Add More Images
+                Add Event Images
               </h3>
-              <UploadButton
-                endpoint="eventImages"
-                onUploadBegin={() => setIsUploading(true)}
-                onClientUploadComplete={(res) => {
-                  setIsUploading(false);
-                  handleImageUpload(res.map((file) => file.url));
-                }}
-                onUploadError={(error) => {
-                  setIsUploading(false);
-                  toast.error(`Upload failed: ${error.message}`);
-                }}
-                appearance={{
-                  button:
-                    "ut-ready:bg-blue-500 ut-uploading:cursor-not-allowed",
-                  container: "w-full",
-                  allowedContent: "hidden",
-                }}
-              />
-              {isUploading && (
-                <p className="text-sm text-gray-500">Uploading images...</p>
-              )}
+              <EventImageUploader eventId={eventId} />
             </div>
           )}
         </div>

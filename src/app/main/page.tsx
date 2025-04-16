@@ -103,9 +103,9 @@ export default function MainPage() {
       <main className="flex-1 p-4">{renderMainContent()}</main>
       {/* Right Sidebar */}
       <aside className="hidden lg:block w-64 border-l p-4 bg-white dark:bg-gray-500">
-        <h3 className="font-bold mb-2">Suggestions xdcsdcsdcsdcsdcsd</h3>
+        <h3 className="font-bold mb-2">Suggestions </h3>
         <p className="text-sm text-gray-600 dark:text-gray-300">
-          More content here...
+          More content here Comming Soon...
         </p>
       </aside>
     </div>

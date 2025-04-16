@@ -18,6 +18,8 @@
 
 // export type OurFileRouter = typeof ourFileRouter;
 
+
+
 // app/api/uploadthing/core.ts
 import { createUploadthing, type FileRouter } from "uploadthing/next";
 
@@ -27,13 +29,13 @@ export const ourFileRouter = {
   eventThumbnail: f({
     image: { maxFileSize: "2MB", maxFileCount: 1 }
   }).onUploadComplete(({ file }) => {
-    console.log("Thumbnail uploaded:", file.url);
+    console.log("Thumbnail uploaded:", file);
   }),
   
   eventImages: f({
     image: { maxFileSize: "4MB", maxFileCount: 5 }
   }).onUploadComplete(({ file }) => {
-    console.log("Event image uploaded:", file.url);
+    console.log("Event image uploaded:", file);
   }),
 } satisfies FileRouter;
 

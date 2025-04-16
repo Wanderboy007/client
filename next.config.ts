@@ -1,9 +1,9 @@
+// next.config.js
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
   images: {
-    domains: ['utfs.io'], // Add this line
+    domains: ['utfs.io', 'images.unsplash.com'],
     remotePatterns: [
       {
         protocol: 'https',
@@ -11,8 +11,13 @@ const nextConfig: NextConfig = {
         port: '',
         pathname: '/f/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'images.unsplash.com',
+      },
     ],
   },
+  // ... other config options can go here
 };
 
 export default nextConfig;

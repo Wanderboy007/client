@@ -4,7 +4,10 @@ import { useRouter } from "next/navigation";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import { UploadButton } from "@/utils/uploadthing";
-import { parseCookies } from "nookies";
+
+interface CreateEventPageProps {
+  onSuccess?: () => void;
+}
 
 const createEvent = async (eventData: {
   title: string;
@@ -56,7 +59,6 @@ export default function CreateEventPage() {
     mutationFn: createEvent,
     onSuccess: () => {
       toast.success("✅ Event created successfully!");
-      router.push("/main");
     },
     onError: () => {
       toast.error("Failed to create event");
@@ -72,7 +74,6 @@ export default function CreateEventPage() {
   };
 
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
     if (!acceptTerms) {
       toast.error("Please accept the terms and conditions");
       return;

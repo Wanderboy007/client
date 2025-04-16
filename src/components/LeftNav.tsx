@@ -1,5 +1,4 @@
 "use client";
-
 import { Home, Calendar, User, BookOpen, LogOut } from "lucide-react";
 import { clearUser } from "@/app/store/userSlice";
 import { useDispatch } from "react-redux";
@@ -10,12 +9,17 @@ interface LeftNavProps {
   ) => void;
   activeComponent: "feed" | "events" | "profile" | "scrapbook";
   variant?: "mobile" | "desktop";
+  // Add this new prop
+  onComponentChange?: (
+    component: "feed" | "events" | "profile" | "scrapbook"
+  ) => void;
 }
 
 export default function LeftNav({
   setActiveComponent,
   activeComponent,
   variant = "desktop",
+  onComponentChange,
 }: LeftNavProps) {
   const menuItems = [
     { id: "feed", label: "Feed", icon: <Home size={18} /> },
@@ -27,6 +31,15 @@ export default function LeftNav({
   const dispatch = useDispatch();
   const isMobile = variant === "mobile";
 
+  const handleClick = (
+    component: "feed" | "events" | "profile" | "scrapbook"
+  ) => {
+    setActiveComponent(component);
+    if (onComponentChange) {
+      onComponentChange(component);
+    }
+  };
+
   return (
     <nav className="flex flex-col justify-between h-full space-y-4">
       <div>
@@ -35,7 +48,7 @@ export default function LeftNav({
           <button
             key={item.id}
             onClick={() =>
-              setActiveComponent(
+              handleClick(
                 item.id as "feed" | "events" | "profile" | "scrapbook"
               )
             }
@@ -56,7 +69,6 @@ export default function LeftNav({
         ))}
       </div>
 
-      {/* Logout button at the bottom with gradient background */}
       <button
         onClick={() => dispatch(clearUser())}
         className="mt-auto flex items-center justify-center w-full px-4 py-2 text-black font-medium rounded-md hover:opacity-90 transition"
