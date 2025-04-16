@@ -12,8 +12,17 @@ const Feed = dynamic(() => import("@/components/Feed"));
 const Scrapbook = dynamic(() => import("@/components/Scrapbook"));
 const Event = dynamic(() => import("@/components/Events"));
 const Profile = dynamic(() => import("@/components/Profile"));
+const MyRegisteredEvents = dynamic(
+  () => import("@/components/MyRegisteredEvents")
+);
 
-type ComponentKey = "feed" | "events" | "profile" | "scrapbook";
+type ComponentKey =
+  | "feed"
+  | "events"
+  | "profile"
+  | "scrapbook"
+  | "mycreatedevents"
+  | "myregisteredevents";
 
 export default function MainPage() {
   const [activeComponent, setActiveComponent] = useState<ComponentKey>("feed");
@@ -32,6 +41,11 @@ export default function MainPage() {
         return <Profile />;
       case "scrapbook":
         return <Scrapbook />;
+      case "mycreatedevents":
+        return <div>My Created Events Component (To be created)</div>;
+
+      case "myregisteredevents":
+        return <MyRegisteredEvents />;
       default:
         return <Feed />;
     }

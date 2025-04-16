@@ -2,16 +2,36 @@
 import { Home, Calendar, User, BookOpen, LogOut } from "lucide-react";
 import { clearUser } from "@/app/store/userSlice";
 import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import { RootState } from "@/app/store";
 
 interface LeftNavProps {
   setActiveComponent: (
-    component: "feed" | "events" | "profile" | "scrapbook"
+    component:
+      | "feed"
+      | "events"
+      | "profile"
+      | "scrapbook"
+      | "mycreatedevents"
+      | "myregisteredevents"
   ) => void;
-  activeComponent: "feed" | "events" | "profile" | "scrapbook";
+  activeComponent:
+    | "feed"
+    | "events"
+    | "profile"
+    | "scrapbook"
+    | "mycreatedevents"
+    | "myregisteredevents";
   variant?: "mobile" | "desktop";
   // Add this new prop
   onComponentChange?: (
-    component: "feed" | "events" | "profile" | "scrapbook"
+    component:
+      | "feed"
+      | "events"
+      | "profile"
+      | "scrapbook"
+      | "mycreatedevents"
+      | "myregisteredevents"
   ) => void;
 }
 
@@ -21,11 +41,34 @@ export default function LeftNav({
   variant = "desktop",
   onComponentChange,
 }: LeftNavProps) {
+  const user = useSelector((state: RootState) => state.user);
+  const role = user?.role;
   const menuItems = [
     { id: "feed", label: "Feed", icon: <Home size={18} /> },
     { id: "events", label: "Events", icon: <Calendar size={18} /> },
     { id: "profile", label: "Profile", icon: <User size={18} /> },
-    { id: "scrapbook", label: "Scrapbook", icon: <BookOpen size={18} /> },
+
+    // Show Scrapbook only if the user is a student
+    ...(role === "student"
+      ? [{ id: "scrapbook", label: "Scrapbook", icon: <BookOpen size={18} /> }]
+      : []),
+
+    // Role-specific items
+    ...(role === "admin"
+      ? [
+          {
+            id: "mycreatedevents",
+            label: "My Created Events",
+            icon: <Calendar size={18} />,
+          },
+        ]
+      : [
+          {
+            id: "myregisteredevents",
+            label: "My Registered Events",
+            icon: <Calendar size={18} />,
+          },
+        ]),
   ];
 
   const dispatch = useDispatch();

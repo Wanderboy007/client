@@ -33,9 +33,34 @@ export default function EventPage() {
   const queryClient = useQueryClient();
   const user = useSelector((state: RootState) => state.user);
   const [isUploading, setIsUploading] = useState(false);
-
   // Debugging log
   console.log("Rendering EventPage with eventId:", eventId);
+
+  //delete event
+  const handleDeleteEvent = async () => {
+    const confirm = window.confirm(
+      "Are you sure you want to delete this event?"
+    );
+    if (!confirm) return;
+
+    try {
+      await axios.delete(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/event/${eventId}`,
+        {
+          withCredentials: true,
+        }
+      );
+      toast.success("Event deleted successfully");
+      router.push("/main");
+      // Redirect or refetch events
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        toast.error(error.response?.data?.message || "Failed to delete event");
+      } else {
+        toast.error("Failed to delete event");
+      }
+    }
+  };
 
   // Fetch event data
   const {
@@ -171,10 +196,26 @@ export default function EventPage() {
 
         {/* Event Details */}
         <div className="p-6 space-y-6">
-          <h1 className="text-3xl font-bold dark:text-white">{event.title}</h1>
-          <p className="text-gray-600 dark:text-gray-300">
-            {event.description}
-          </p>
+          <div className="flex justify-between items-start">
+            <div>
+              <h1 className="text-3xl font-bold dark:text-white">
+                {event.title}
+              </h1>
+              <p className="text-gray-600 dark:text-gray-300">
+                {event.description}
+              </p>
+            </div>
+
+            {/* {user.role === "admin" && (
+              <Button
+                variant="destructive"
+                onClick={handleDeleteEvent}
+                className="ml-auto"
+              >
+                Delete Event
+              </Button>
+            )} */}
+          </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="flex items-center gap-2">
@@ -199,19 +240,29 @@ export default function EventPage() {
             </div>
           </div>
 
-          <Button
-            onClick={() => toggleRegistration()}
-            className="w-full md:w-auto"
-            variant={
-              user.id && event.registeredUsers.includes(user.id)
-                ? "destructive"
-                : "default"
-            }
-          >
-            {user.id && event.registeredUsers.includes(user.id)
-              ? "Leave Event"
-              : "Join Event"}
-          </Button>
+          {user.role === "admin" ? (
+            <Button
+              variant="destructive"
+              onClick={handleDeleteEvent}
+              className="w-full md:w-auto"
+            >
+              Delete Event
+            </Button>
+          ) : (
+            <Button
+              onClick={() => toggleRegistration()}
+              className="w-full md:w-auto"
+              variant={
+                user.id && event.registeredUsers.includes(user.id)
+                  ? "destructive"
+                  : "default"
+              }
+            >
+              {user.id && event.registeredUsers.includes(user.id)
+                ? "Leave Event"
+                : "Join Event"}
+            </Button>
+          )}
 
           {/* Image Gallery */}
           {event.eventimages?.length > 0 && (
