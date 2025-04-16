@@ -2,6 +2,7 @@
 
 import { useRef, useEffect } from "react";
 import { useInfiniteQuery } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
 
 interface EventItem {
   _id: string;
@@ -21,6 +22,7 @@ const fetchEvents = async ({ pageParam = 1 }) => {
 export default function Feed() {
   const loaderRef = useRef<HTMLDivElement | null>(null);
   const scrollContainerRef = useRef<HTMLDivElement | null>(null);
+  const router = useRouter();
 
   const { data, fetchNextPage, hasNextPage, isLoading, isError, error } =
     useInfiniteQuery({
@@ -88,15 +90,13 @@ export default function Feed() {
             page.events.map((event: EventItem) => (
               <div
                 key={event._id}
+                onClick={() => router.push(`/events/${event._id}`)}
                 className="bg-white dark:bg-gray-700 rounded-xl shadow-md p-4 transition-transform transform hover:scale-[1.01] hover:shadow-xl hover:ring-2 hover:ring-blue-400/40 cursor-pointer"
               >
                 <img
                   src={event.thumbnail || fallbackImage}
                   alt={event.title}
                   className="w-full h-48 object-cover rounded mb-3 transition-all duration-300"
-                  // onError={(e) => {
-                  //   e.currentTarget.src = fallbackImage;
-                  // }}
                 />
                 <h3 className="text-xl font-semibold mb-1 text-gray-800 dark:text-white">
                   {event.title}

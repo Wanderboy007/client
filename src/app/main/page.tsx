@@ -5,6 +5,8 @@ import dynamic from "next/dynamic";
 import { Menu } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import LeftNav from "@/components/LeftNav";
+import { useSelector, useDispatch } from "react-redux";
+import { RootState } from "../store";
 
 const Feed = dynamic(() => import("@/components/Feed"));
 const Scrapbook = dynamic(() => import("@/components/Scrapbook"));
@@ -16,6 +18,9 @@ type ComponentKey = "feed" | "events" | "profile" | "scrapbook";
 export default function MainPage() {
   const [activeComponent, setActiveComponent] = useState<ComponentKey>("feed");
   const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
+
+  const user = useSelector((state: RootState) => state.user);
+  console.log("from redux = " + user.id);
 
   const renderMainContent = () => {
     switch (activeComponent) {
@@ -41,14 +46,13 @@ export default function MainPage() {
           <Menu size={24} />
         </button>
       </header>
-
       {/* AnimatePresence for mobile sidebar */}
       <AnimatePresence>
         {isMobileNavOpen && (
           <>
             {/* Overlay */}
             <motion.div
-              className="fixed inset-0 bg-black bg-opacity-40 z-40"
+              className="fixed inset-0 bg-transparent z-40"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
@@ -57,7 +61,7 @@ export default function MainPage() {
 
             {/* Animated Sidebar */}
             <motion.div
-              className="fixed top-0 left-0 w-64 h-full z-50 text-white shadow-lg bg-gradient-to-b from-indigo-500 via-purple-500 to-pink-500 overflow-y-auto"
+              className="fixed top-0 left-0 w-64 h-full z-50 text-white shadow-lg bg-white overflow-y-auto"
               initial={{ x: "-100%" }}
               animate={{ x: 0 }}
               exit={{ x: "-100%" }}
@@ -87,21 +91,18 @@ export default function MainPage() {
           </>
         )}
       </AnimatePresence>
-
       {/* Desktop Sidebar */}
-      <aside className="hidden md:block w-64 border-r bg-white dark:bg-gray-800 p-4">
+      <aside className="hidden md:block w-64 border-r bg-white dark:bg-gray-500 p-4">
         <LeftNav
           setActiveComponent={setActiveComponent}
           activeComponent={activeComponent}
           variant="desktop"
         />
       </aside>
-
       {/* Main Content */}
       <main className="flex-1 p-4">{renderMainContent()}</main>
-
       {/* Right Sidebar */}
-      <aside className="hidden lg:block w-64 border-l p-4 bg-white dark:bg-gray-800">
+      <aside className="hidden lg:block w-64 border-l p-4 bg-white dark:bg-gray-500">
         <h3 className="font-bold mb-2">Suggestions xdcsdcsdcsdcsdcsd</h3>
         <p className="text-sm text-gray-600 dark:text-gray-300">
           More content here...

@@ -56,7 +56,7 @@ export default function CreateEventPage() {
     mutationFn: createEvent,
     onSuccess: () => {
       toast.success("✅ Event created successfully!");
-      router.push("/");
+      router.push("/main");
     },
     onError: () => {
       toast.error("Failed to create event");

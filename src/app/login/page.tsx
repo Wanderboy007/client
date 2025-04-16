@@ -3,6 +3,9 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
+import { setUser } from "@/app/store/userSlice";
+import { CloudHail } from "lucide-react";
 
 const LoginUser = async (user: any) => {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/login`, {
@@ -22,20 +25,22 @@ export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setpassword] = useState("");
   const router = useRouter();
+  const dispatch = useDispatch();
 
   const mutation = useMutation({
     mutationFn: LoginUser,
     onSuccess: (data) => {
       console.log("User login:", data);
 
-      // Save the user data (or token) to local storage
-      localStorage.setItem("user", JSON.stringify(data));
-
+      // Assuming data.user = { _id, role, name } or similar
+      const { _id, role, name } = data.user;
+      console.log("login page" + _id + role + name);
+      dispatch(setUser({ id: _id, role, name }));
       router.push("/main");
     },
     onError: (error) => {
       console.error("Error:", error);
-      alert("Something went wrong");
+      toast.error("Login failed. Please check your credentials.");
     },
   });
 
