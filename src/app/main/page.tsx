@@ -5,7 +5,7 @@ import dynamic from "next/dynamic";
 import { Menu } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import LeftNav from "@/components/LeftNav";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { RootState } from "../store";
 
 const Feed = dynamic(() => import("@/components/Feed"));

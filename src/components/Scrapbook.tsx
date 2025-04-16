@@ -3,7 +3,7 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import { RootState } from "../app/store";
 import Image from "next/image";
-import { FiX, FiChevronLeft, FiChevronRight, FiMapPin } from "react-icons/fi";
+import { FiX, FiChevronLeft, FiChevronRight } from "react-icons/fi";
 
 interface ScrapbookEvent {
   eventId: string;
@@ -87,7 +87,7 @@ const Scrapbook = () => {
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [selectedImage, currentImageIndex]);
+  }, [selectedImage, currentImageIndex, navigateImage]);
 
   if (loading)
     return <div className="text-center py-8">Loading scrapbook...</div>;

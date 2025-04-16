@@ -4,7 +4,29 @@ import { useMutation } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 
-const registerUser = async (user: any) => {
+interface RegisterUserInput {
+  name: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+  role: string;
+  year: string;
+}
+
+interface RegisterUserResponse {
+  message: string;
+  user: {
+    id: string;
+    name: string;
+    email: string;
+    role: string;
+    year: string;
+  };
+}
+
+const registerUser = async (
+  user: RegisterUserInput
+): Promise<RegisterUserResponse> => {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/api/auth/register`,
     {

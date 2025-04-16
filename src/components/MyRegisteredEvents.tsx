@@ -32,7 +32,8 @@ const Scrapbook = () => {
         setEvents(res.data); // assuming res.data is the list of events
       } catch (err) {
         setError(
-          (err as any).response?.data?.message || "Failed to fetch events"
+          (axios.isAxiosError(err) && err.response?.data?.message) ||
+            "Failed to fetch events"
         );
       } finally {
         setLoading(false);
@@ -54,7 +55,7 @@ const Scrapbook = () => {
       <h1 className="text-2xl font-bold mb-4">My Registered Events</h1>
       {events.length === 0 ? (
         <p className="text-gray-500">
-          You haven't registered for any events yet.
+          You haven&apos;t registered for any events yet.
         </p>
       ) : (
         <ul className="space-y-4">

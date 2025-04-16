@@ -5,9 +5,21 @@ import { useMutation } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
 import { setUser } from "@/app/store/userSlice";
-import { CloudHail } from "lucide-react";
 
-const LoginUser = async (user: any) => {
+interface LoginUserInput {
+  email: string;
+  password: string;
+}
+
+interface LoginUserResponse {
+  user: {
+    _id: string;
+    role: string;
+    name: string;
+  };
+}
+
+const LoginUser = async (user: LoginUserInput): Promise<LoginUserResponse> => {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/login`, {
     method: "POST",
     headers: {
@@ -35,7 +47,17 @@ export default function LoginPage() {
       // Assuming data.user = { _id, role, name } or similar
       const { _id, role, name } = data.user;
       console.log("login page" + _id + role + name);
-      dispatch(setUser({ id: _id, role, name }));
+      const validRoles: ("admin" | "student" | null)[] = [
+        "admin",
+        "student",
+        null,
+      ];
+      const validatedRole = validRoles.includes(
+        role as "admin" | "student" | null
+      )
+        ? (role as "admin" | "student" | null)
+        : null;
+      dispatch(setUser({ id: _id, role: validatedRole, name }));
       router.push("/main");
     },
     onError: (error) => {
@@ -44,7 +66,7 @@ export default function LoginPage() {
     },
   });
 
-  const handleSubmit = (e: any) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
 
     if (!email.trim() || !password.trim()) {

@@ -1,13 +1,9 @@
 "use client";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "react-toastify";
+import Image from "next/image";
 import { UploadButton } from "@/utils/uploadthing";
-
-interface CreateEventPageProps {
-  onSuccess?: () => void;
-}
 
 const createEvent = async (eventData: {
   title: string;
@@ -41,7 +37,6 @@ const createEvent = async (eventData: {
 };
 
 export default function CreateEventPage() {
-  const router = useRouter();
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -73,7 +68,7 @@ export default function CreateEventPage() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = () => {
     if (!acceptTerms) {
       toast.error("Please accept the terms and conditions");
       return;
@@ -195,13 +190,13 @@ export default function CreateEventPage() {
             }}
           />
           {thumbnailUrl && (
-            <div className="mt-2">
-              <img
-                src={thumbnailUrl}
-                alt="Thumbnail preview"
-                className="w-40 h-40 object-cover rounded-lg border"
-              />
-            </div>
+            <Image
+              src={thumbnailUrl}
+              alt="Thumbnail preview"
+              className="w-40 h-40 object-cover rounded-lg border"
+              width={160}
+              height={160}
+            />
           )}
           {isUploading && (
             <p className="text-sm text-gray-500 mt-1">Uploading thumbnail...</p>

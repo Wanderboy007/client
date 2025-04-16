@@ -1,17 +1,16 @@
 // app/events/[eventId]/page.tsx
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import { Calendar, Clock, MapPin, Users, Upload } from "lucide-react";
+import { Calendar, Clock, MapPin, Users } from "lucide-react";
 import { useSelector } from "react-redux";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { RootState } from "../../store";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
-import { UploadDropzone } from "@/utils/uploadthing";
 import { toast } from "react-toastify";
 import { EventImageUploader } from "@/components/EventImageUploader";
 
@@ -32,7 +31,6 @@ export default function EventPage() {
   const { eventId } = useParams() as { eventId: string };
   const queryClient = useQueryClient();
   const user = useSelector((state: RootState) => state.user);
-  const [isUploading, setIsUploading] = useState(false);
   // Debugging log
   console.log("Rendering EventPage with eventId:", eventId);
 
@@ -114,27 +112,17 @@ export default function EventPage() {
           : "Registered successfully"
       );
     },
-    onError: (error: any) => {
+    onError: (error: unknown) => {
       console.error("Registration error:", error);
-      toast.error(
-        error.response?.data?.message || "Registration update failed"
-      );
+      if (axios.isAxiosError(error)) {
+        toast.error(
+          error.response?.data?.message || "Registration update failed"
+        );
+      } else {
+        toast.error("Registration update failed");
+      }
     },
   });
-
-  // Image upload handler
-  const handleImageUpload = (urls: string[]) => {
-    axios
-      .patch(`/api/events/${eventId}/images`, { images: urls })
-      .then(() => {
-        queryClient.invalidateQueries({ queryKey: ["event", eventId] });
-        toast.success("Images added successfully");
-      })
-      .catch((error) => {
-        console.error("Image upload error:", error);
-        toast.error(error.response?.data?.message || "Failed to add images");
-      });
-  };
 
   if (isLoading) {
     return (
