@@ -45,13 +45,12 @@ export default function LeftNav({
   const role = user?.role;
   const menuItems = [
     { id: "feed", label: "Feed", icon: <Home size={18} /> },
-    { id: "events", label: "Events", icon: <Calendar size={18} /> },
     { id: "profile", label: "Profile", icon: <User size={18} /> },
 
     // Show Scrapbook only if the user is a student
     ...(role === "student"
       ? [{ id: "scrapbook", label: "Scrapbook", icon: <BookOpen size={18} /> }]
-      : []),
+      : [{ id: "events", label: "Events", icon: <Calendar size={18} /> }]),
 
     // Role-specific items
     ...(role === "admin"
