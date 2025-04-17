@@ -68,19 +68,7 @@ export default function CreateEventPage() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  interface FormData {
-    title: string;
-    description: string;
-    date: string;
-    time: string;
-    location: string;
-    category: string;
-    branch: string;
-  }
-
-  interface HandleSubmitEvent extends React.FormEvent<HTMLFormElement> {}
-
-  const handleSubmit = (e: HandleSubmitEvent) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
     if (!acceptTerms) {
       toast.error("Please accept the terms and conditions");

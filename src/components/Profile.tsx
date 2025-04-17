@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { RootState } from "../app/store"; // Adjust the path to your store file
+import Image from "next/image";
 
 interface User {
   name: string;
@@ -41,7 +42,7 @@ const Profile = () => {
     <div className="max-w-3xl mx-auto p-6 mt-10 bg-white shadow-xl rounded-2xl">
       <div className="flex items-center gap-6">
         {user.profile ? (
-          <img
+          <Image
             src={user.profile}
             alt="Profile"
             className="w-24 h-24 rounded-full object-cover border border-gray-300"
