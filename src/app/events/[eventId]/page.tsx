@@ -127,11 +127,7 @@ export default function EventPage() {
   if (isLoading) {
     return (
       <div className="flex justify-center items-center min-h-screen">
-        <motion.div
-          animate={{ rotate: 360 }}
-          transition={{ duration: 1, repeat: Infinity }}
-          className="border-2 border-blue-500 rounded-full w-8 h-8 border-t-transparent"
-        />
+        <motion.div className="border-2 border-blue-500 rounded-full w-8 h-8 border-t-transparent" />
       </div>
     );
   }

@@ -16,6 +16,8 @@ const MyRegisteredEvents = dynamic(
   () => import("@/components/MyRegisteredEvents")
 );
 
+const MyCreatedEvents = dynamic(() => import("@/components/MyCreatedEvents"));
+
 type ComponentKey =
   | "feed"
   | "events"
@@ -42,8 +44,7 @@ export default function MainPage() {
       case "scrapbook":
         return <Scrapbook />;
       case "mycreatedevents":
-        return <div>My Created Events Component (To be created)</div>;
-
+        return <MyCreatedEvents />;
       case "myregisteredevents":
         return <MyRegisteredEvents />;
       default:
